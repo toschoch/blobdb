@@ -1,0 +1,44 @@
+version: '2.0'
+
+services:
+    rsync.to:
+        image: shocki/rsync-to
+        container_name: rsync.to
+        networks:
+          - rsync
+          - solr
+        volumes:
+          - D:\Users\TOS\docker\volumes\data:/data
+        environment:
+          - POSTREGEX=^.*.json
+          - SOLR_HOST=solr
+          - SOLR_CORE=blob
+
+    solr:
+        image: shocki/solr
+        container_name: solr
+        ports:
+          - 8983:8983
+        networks:
+          - solr
+        volumes:
+          - D:\Users\TOS\docker\volumes\data:/data
+          - D:\Users\TOS\docker\volumes\solr:/opt/solr/server/solr/mycores
+        entrypoint:
+          - docker-entrypoint.sh
+          - solr-precreate
+          - blob
+
+    blobs:
+        image: nginx:alpine
+        container_name: blobs
+        ports:
+          - 8984:80
+        volumes:
+          - D:\Users\TOS\docker\volumes\data:/usr/share/nginx/html:ro
+
+networks:
+  rsync:
+    driver: bridge
+  solr:
+    driver: bridge
