@@ -19,7 +19,7 @@ Installation / Usage
 clone the repo:
 
 ```
-git clone <git-url> blobdb
+git clone https://github.com/toschoch/blobdb.git blobdb
 ```
 build the docker image
 ```
